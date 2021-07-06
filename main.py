@@ -22,9 +22,6 @@ def hotkey_thr(command_queue, thread_event):
             thread_event.set()
             print('Playing')
 
-        # command = 'toggle bot'
-        # command_queue.put(command)
-
     def com_mouse_pos():
         command = 'mouse pos'
         command_queue.put(command)
