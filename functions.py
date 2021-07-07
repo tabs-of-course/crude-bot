@@ -9,26 +9,14 @@ import win32con
 import pyautogui
 from skimage import metrics
 
-player_center_loc = [254, 491]
-player_bot_loc = [254, 865]
-
-
-def drink_hp_pot(hwnd):
-    left_click(hwnd, 371, 985, 0.1)
-    sleep(0.3)
-    left_click(hwnd, 399, 827, 0.1)
-    sleep(0.3)
-
-
-def drink_mana_pot(hwnd):
-    left_click(hwnd, 371, 985, 0.1)
-    sleep(0.3)
-    left_click(hwnd, 163, 829, 0.1)
-    sleep(0.3)
+# Player sprite location in the center of the screen
+p_c_loc = [254, 491]
+# Player sprite location at the bottom of the screen
+p_b_loc = [254, 865]
 
 
 def left_click(hwnd, x, y, delay):
-    ## 33 pixel offset to account for the top bar
+    # 33 pixel offset to account for the top bar
     lParam = win32api.MAKELONG(x, y - 33)
     win32gui.SendMessage(
         hwnd, win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, lParam)
@@ -70,12 +58,15 @@ def getSpecificHWND(window):
     hwnd = win32gui.FindWindow(0, window)
     return hwnd
 
+
 def get_child_windows(parent):
     if not parent:
         return
     hwndChildList = []
-    win32gui.EnumChildWindows(parent, lambda hwnd, param: param.append(hwnd),hwndChildList)
+    win32gui.EnumChildWindows(
+        parent, lambda hwnd, param: param.append(hwnd), hwndChildList)
     return hwndChildList
+
 
 def get_background_screen(hwnd):
     left, top, right, bot = win32gui.GetWindowRect(hwnd)
@@ -104,13 +95,10 @@ def get_background_screen(hwnd):
     mfcDC.DeleteDC()
     win32gui.ReleaseDC(hwnd, hwndDC)
     cv2.cvtColor(img, cv2.COLOR_BGRA2RGB)
-    # cv2.imwrite('screen.jpg', im)
     return img
 
 
 def find_diff(hwnd):
-    
-
 
     # Take 3 consecutive screenshots
     pic_1 = get_background_screen(hwnd)
@@ -149,7 +137,6 @@ def find_diff(hwnd):
 
     contours = contours[0] if len(contours) == 2 else contours[1]
 
-
     x = 0
     y = 0
     mobs_pos = []
@@ -158,9 +145,12 @@ def find_diff(hwnd):
         area = cv2.contourArea(c)
         if area > 200:
             x, y, w, h = cv2.boundingRect(c)
-            if (x in range(player_center_loc[0] - 30, player_center_loc[0] + 30, 1) or
-                    x in range(player_bot_loc[0] - 60, player_bot_loc[0] + 60)) and (y in range(player_center_loc[1] - 30, player_center_loc[1] + 30, 1) 
-                    or y in range(player_bot_loc[1] - 60, player_bot_loc[1] + 60, 1)):
+            # This works because the x coordinate is pretty much the same
+            if (x in range(p_c_loc[0] - 30, p_c_loc[0] + 30, 1)
+                or x in range(p_b_loc[0] - 60, p_b_loc[0] + 60))        \
+                and (y in range(p_c_loc[1] - 30, p_c_loc[1] + 30, 1)
+                     or y in range(p_b_loc[1] - 60, p_b_loc[1] + 60, 1)):
+
                 cv2.rectangle(
                     pic_3, (x, y), (x + w, y + h), (0, 355, 64), 2)
             else:
@@ -174,9 +164,4 @@ def find_diff(hwnd):
 
             cv2.imwrite('images/after.jpg', pic_3)
             cv2.imwrite('images/diff.jpg', diff)
-            # return (x, y)
-
-            # cv2.drawContours(mask, [c], 0, (0, 255, 0), -1)
-            # cv2.drawContours(filled_after, [c], 0, (0, 255, 0), -1)
     return mobs_pos
-
