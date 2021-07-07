@@ -102,9 +102,9 @@ def find_diff(hwnd):
 
     # Take 3 consecutive screenshots
     pic_1 = get_background_screen(hwnd)
-    sleep(0.15)
+    sleep(0.13)
     pic_2 = get_background_screen(hwnd)
-    sleep(0.15)
+    sleep(0.13)
     pic_3 = get_background_screen(hwnd)
 
     # Convert images to grayscale
@@ -140,15 +140,15 @@ def find_diff(hwnd):
     x = 0
     y = 0
     mobs_pos = []
-    print('--------------')
+    
     for c in contours:
         area = cv2.contourArea(c)
-        if area > 200:
+        if area > 500 and area < 3000:
             x, y, w, h = cv2.boundingRect(c)
             # This works because the x coordinate is pretty much the same
-            if (x in range(p_c_loc[0] - 30, p_c_loc[0] + 30, 1)
+            if (x in range(p_c_loc[0] - 80, p_c_loc[0] + 80, 1)
                 or x in range(p_b_loc[0] - 60, p_b_loc[0] + 60))        \
-                and (y in range(p_c_loc[1] - 30, p_c_loc[1] + 30, 1)
+                and (y in range(p_c_loc[1] - 80, p_c_loc[1] + 80, 1)
                      or y in range(p_b_loc[1] - 60, p_b_loc[1] + 60, 1)):
 
                 cv2.rectangle(
@@ -164,4 +164,9 @@ def find_diff(hwnd):
 
             cv2.imwrite('images/after.jpg', pic_3)
             cv2.imwrite('images/diff.jpg', diff)
+        # else:
+
+        #     x, y, w, h = cv2.boundingRect(c)
+        #     cv2.rectangle(
+        #         pic_3, (x, y), (x + w, y + h), (255, 255, 255), 2)
     return mobs_pos

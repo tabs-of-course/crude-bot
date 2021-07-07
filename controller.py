@@ -116,7 +116,7 @@ def bot_thread(command_queue, thread_event):
 
             # Find enemy on map
             if in_map is True:
-                print('Out of combat')
+                
                 try:
                     hwindc = win32gui.GetWindowDC(hwnd)
                     hp_status_ooc = win32gui.GetPixel(
@@ -130,11 +130,13 @@ def bot_thread(command_queue, thread_event):
                     print('Healing')
                     left_click(window_list[0], x_ooc, y_ooc, 1.2)
                     continue
-
-                mobs_pos = find_diff(hwnd)
-                for index, c in enumerate(mobs_pos):
-                    x, y, w, h = c
-                    print(index, ':', c)
+                
+                print('Searchin for enemies')
+                while(len(mobs_pos)< 2):
+                    mobs_pos = find_diff(hwnd)
+                # for index, c in enumerate(mobs_pos):
+                #     x, y, w, h = c
+                #     print(index, ':', c)
                 try:
                     x, y, w, h = random.choice(mobs_pos)
                 except:
@@ -142,7 +144,8 @@ def bot_thread(command_queue, thread_event):
 
             # Battle random enemy
             if x and y != 0:
-                print('Engaging enemy at:', x, y)
+                # print('Engaging enemy at:', x, y)
+                print('Trying to engage enemy')
                 left_click(window_list[0], x + int(w/2), y + int(h/2), 1.2)
 
             # Combat loop
