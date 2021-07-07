@@ -25,9 +25,9 @@ def bot_thread(command_queue, thread_event):
 
     window_name = 'LDPlayer'
 
-    ooc_hp_pos = [276, 903]
-    ooc_mana_pos = [275, 916]
-    attack_pos = [374, 729]
+    ooc_hp_pos = [297, 970]
+    ooc_mana_pos = [298, 987]
+    attack_pos = [387, 791]
 
     hwnd = getSpecificHWND(window_name)
 
@@ -142,7 +142,7 @@ def bot_thread(command_queue, thread_event):
 
             # Battle random enemy
             if x and y != 0:
-                print('Enganging enemy at:', x, y)
+                print('Engaging enemy at:', x, y)
                 left_click(window_list[0], x + int(w/2), y + int(h/2), 1.2)
 
             # Combat loop

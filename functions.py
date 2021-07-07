@@ -34,7 +34,7 @@ def find_sprite(hwnd, sprite_path):
     x = 0
     y = 0
     gray_img = make_gray_image(get_background_screen(hwnd))
-    threshold = 0.70
+    threshold = 0.9
     sprite_sprite = cv2.imread(sprite_path, 0)
     sprite_sprite_w, sprite_sprite_h = sprite_sprite.shape[::-1]
     res = cv2.matchTemplate(gray_img, sprite_sprite, cv2.TM_CCOEFF_NORMED)
