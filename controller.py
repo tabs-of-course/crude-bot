@@ -34,7 +34,7 @@ def bot_thread(command_queue, thread_event):
     window_list = []
     window_list = get_child_windows(hwnd)
     while True:
-        sleep(0.1)
+        sleep(0.5)
         # Command response
         if not command_queue.empty():
             command = command_queue.get()
@@ -72,7 +72,6 @@ def bot_thread(command_queue, thread_event):
 
         # Event response
         if thread_event.is_set():
-            sleep(0.4)
             x = 0
             y = 0
             w = 0
@@ -130,13 +129,10 @@ def bot_thread(command_queue, thread_event):
                     print('Healing')
                     left_click(window_list[0], x_ooc, y_ooc, 1.2)
                     continue
-                
+
                 print('Searchin for enemies')
-                while(len(mobs_pos)< 2):
+                while(len(mobs_pos)< 3):
                     mobs_pos = find_diff(hwnd)
-                # for index, c in enumerate(mobs_pos):
-                #     x, y, w, h = c
-                #     print(index, ':', c)
                 try:
                     x, y, w, h = random.choice(mobs_pos)
                 except:
@@ -144,7 +140,6 @@ def bot_thread(command_queue, thread_event):
 
             # Battle random enemy
             if x and y != 0:
-                # print('Engaging enemy at:', x, y)
                 print('Trying to engage enemy')
                 left_click(window_list[0], x + int(w/2), y + int(h/2), 1.2)
 

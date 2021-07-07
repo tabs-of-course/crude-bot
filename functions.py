@@ -143,7 +143,7 @@ def find_diff(hwnd):
     
     for c in contours:
         area = cv2.contourArea(c)
-        if area > 500 and area < 3000:
+        if area > 500:
             x, y, w, h = cv2.boundingRect(c)
             # This works because the x coordinate is pretty much the same
             if (x in range(p_c_loc[0] - 80, p_c_loc[0] + 80, 1)
