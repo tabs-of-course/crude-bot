@@ -8,12 +8,7 @@ import win32gui
 import win32con
 import pyautogui
 from skimage import metrics
-
-# Player sprite location in the center of the screen
-p_c_loc = [254, 491]
-# Player sprite location at the bottom of the screen
-p_b_loc = [254, 865]
-
+from settings import *
 
 def left_click(hwnd, x, y, delay):
     # 33 pixel offset to account for the top bar
@@ -127,6 +122,9 @@ def find_diff(hwnd):
     # [0,255] before we can use it with OpenCV
     diff = (diff * 255).astype("uint8")
 
+    # diff_1_2 = (diff_1_2 * 255).astype("uint8")
+    # cv2.imwrite('images/diff_1_2.jpg', diff_1_2)
+
     # Threshold the difference image, followed by finding contours to
     # obtain the regions of the two input images that differ
     thresh = cv2.threshold(
@@ -140,16 +138,16 @@ def find_diff(hwnd):
     x = 0
     y = 0
     mobs_pos = []
-    
+
     for c in contours:
         area = cv2.contourArea(c)
-        if area > 500:
+        if 555 < area:
             x, y, w, h = cv2.boundingRect(c)
             # This works because the x coordinate is pretty much the same
-            if (x in range(p_c_loc[0] - 80, p_c_loc[0] + 80, 1)
-                or x in range(p_b_loc[0] - 60, p_b_loc[0] + 60))        \
-                and (y in range(p_c_loc[1] - 80, p_c_loc[1] + 80, 1)
-                     or y in range(p_b_loc[1] - 60, p_b_loc[1] + 60, 1)):
+            if x in range(p_b_loc[0] - p_b_loc_offset, p_b_loc[0] + p_b_loc_offset)                 \
+                    and y in range(p_b_loc[1] - p_b_loc_offset, p_b_loc[1] + p_b_loc_offset)        \
+                    or x in range(p_c_loc[0] - p_c_loc_offset_neg, p_c_loc[0] + p_c_loc_offset_pos) \
+                    and y in range(p_c_loc[1] - p_c_loc_offset_neg, p_c_loc[1] + p_c_loc_offset_pos):
 
                 cv2.rectangle(
                     pic_3, (x, y), (x + w, y + h), (0, 355, 64), 2)

@@ -4,7 +4,7 @@ import random
 
 from numpy.core.fromnumeric import var
 from functions import *
-
+from settings import *
 
 def bot_thread(command_queue, thread_event):
     x = 0
@@ -23,18 +23,12 @@ def bot_thread(command_queue, thread_event):
     in_combat = False
     need_to_click_continue = False
 
-    window_name = 'LDPlayer'
-
-    ooc_hp_pos = [297, 970]
-    ooc_mana_pos = [298, 987]
-    attack_pos = [387, 791]
-
     hwnd = getSpecificHWND(window_name)
 
     window_list = []
     window_list = get_child_windows(hwnd)
     while True:
-        sleep(0.5)
+        sleep(0.75)
         # Command response
         if not command_queue.empty():
             command = command_queue.get()
@@ -51,7 +45,7 @@ def bot_thread(command_queue, thread_event):
 
             if command == 'command':
                 mobs_pos = []
-                while(len(mobs_pos) < 3):
+                while(len(mobs_pos) < enemy_number):
                     mobs_pos = find_diff(hwnd)
                     for index, c in enumerate(mobs_pos):
                         x, y, h, w = c
@@ -131,7 +125,7 @@ def bot_thread(command_queue, thread_event):
                     continue
 
                 print('Searchin for enemies')
-                while(len(mobs_pos)< 3):
+                while(len(mobs_pos)< 1):
                     mobs_pos = find_diff(hwnd)
                 try:
                     x, y, w, h = random.choice(mobs_pos)
