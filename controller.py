@@ -6,6 +6,7 @@ from numpy.core.fromnumeric import var
 from functions import *
 from settings import *
 
+
 def bot_thread(command_queue, thread_event):
     x = 0
     y = 0
@@ -109,7 +110,7 @@ def bot_thread(command_queue, thread_event):
 
             # Find enemy on map
             if in_map is True:
-                
+
                 try:
                     hwindc = win32gui.GetWindowDC(hwnd)
                     hp_status_ooc = win32gui.GetPixel(
@@ -125,7 +126,7 @@ def bot_thread(command_queue, thread_event):
                     continue
 
                 print('Searchin for enemies')
-                while(len(mobs_pos)< 1):
+                while(len(mobs_pos) < 1):
                     mobs_pos = find_diff(hwnd)
                 try:
                     x, y, w, h = random.choice(mobs_pos)

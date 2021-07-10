@@ -10,6 +10,7 @@ import pyautogui
 from skimage import metrics
 from settings import *
 
+
 def left_click(hwnd, x, y, delay):
     # 33 pixel offset to account for the top bar
     lParam = win32api.MAKELONG(x, y - 33)
@@ -143,7 +144,6 @@ def find_diff(hwnd):
         area = cv2.contourArea(c)
         if 555 < area:
             x, y, w, h = cv2.boundingRect(c)
-            # This works because the x coordinate is pretty much the same
             if x in range(p_b_loc[0] - p_b_loc_offset, p_b_loc[0] + p_b_loc_offset)                 \
                     and y in range(p_b_loc[1] - p_b_loc_offset, p_b_loc[1] + p_b_loc_offset)        \
                     or x in range(p_c_loc[0] - p_c_loc_offset_neg, p_c_loc[0] + p_c_loc_offset_pos) \
